@@ -160,6 +160,10 @@ Test Authenticated Request:
 
 Mapping is the process of defining how a document, and the fields it contains, are stored and indexed.
 
+First I want to draw your attention to explicit mapping to gain basic understanding or flow then we will move to dynamic mapping.
+
+
+
 Two types of mapping:
 
     1. Dynamic
@@ -171,6 +175,8 @@ This default behavior makes it easy to index and explore your data—​just sta
 Elasticsearch will detect and map booleans, floating point and integer values, dates, and strings to the 
 appropriate Elasticsearch data types.
 
+### Explicit Mapping
+
 Explicit mapping enables you:
 
 - Distinguish between full-text string fields and exact value string fields
@@ -179,8 +185,92 @@ Explicit mapping enables you:
 - Use custom date formats
 - Use data types such as geo_point and geo_shape that cannot be automatically detected
 
+#### Example:
+
+Create an Index to save data:
+
+```ruby
+PUT /users
+{
+  "mappings": {
+    "properties": {
+      "age":    { "type": "integer" },  # creates age field with integer datatype
+      "email":  { "type": "keyword"  }, # creates email field with keyword datatype
+      "name":   { "type": "text"  }     # creates name field with text datatype
+    }
+ }
+}
+```
+Its possible to create nested data: 
+
+```ruby
+PUT /users
+{
+  "mappings": {
+    "properties": {
+      "age":    { "type": "integer" },  # creates age field with integer datatype
+      "email":  { "type": "keyword"  }, # creates email field with keyword datatype
+      "purchase":   {
+         "properties": {
+            "name" : { "type" : "keyword" },
+            "price" : { "type" : "integer" } 
+          }
+      }   
+    }
+ }
+}
+```
+
+Also its possible to add new field to index.
+
+
+### Dynamic Mapping
+
+One of the most important features of Elasticsearch is that it tries to get out of your way and let you start exploring your data
+as quickly as possible. To index a document, you don’t have to first create an index, define a mapping type, and define your 
+fields you can just index a document and the index, type, and fields will display automatically
+
+#### Dynamic Filed Mapping
+
+When Elasticsearch detects a new field in a document, it dynamically adds the field to the type mapping by default.
+The `dynamic` parameter controls this behavior.
+
+You can explicitly instruct Elasticsearch to dynamically create fields based on incoming documents by setting 
+the dynamic parameter to true or runtime.
 
 refer [Official Document](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html) for more info.
+
+#### Dynamic Template Mapping
+
+Apply mapping base on condition in data creation time.
+
+- `match_mapping_type` operates on the data type that Elasticsearch detects
+- `match` and `unmatch` use a pattern to match on the field name
+- `path_match` and `path_unmatch` operate on the full dotted path to the field
+
+Example: 
+
+Changes string value for field name starts with ip
+
+```ruby
+PUT my-index-000001/
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "strings_as_ip": {
+          "match_mapping_type": "string",
+          "match": "ip*",
+          "runtime": {
+            "type": "ip"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
 
 ## Data streams
 
