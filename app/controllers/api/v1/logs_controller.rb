@@ -1,6 +1,8 @@
 class Api::V1::LogsController < Api::V1::BaseController
   def create
-    @response = ::Logs.new(whitelist_params).call
+    @log = ::Logs.new(whitelist_params, self).call
+
+    render json: { data: @log.response.body }, status: @log.status
   end
 
   def search
