@@ -271,6 +271,116 @@ PUT my-index-000001/
 }
 ```
 
+## Search Data
+
+Search query is a question you ask elastic in a format elastic understands it, for instance users activity: what is the average price for 
+all sold materials or what is the most recent request and what is the popular api in my app, or search specific word in description of products.
+
+Responses returns in JSON format inside `hits` key.
+
+Examples: 
+
+Search for users with name `John` in `users` index 
+
+```ruby
+GET /users/_search
+{
+  "query": {
+    "match": {
+      "user.name": "John"
+    }
+  }
+}
+```
+
+or in all indices, search address for students and teachers and all other indices has address field
+
+```ruby
+GET /users/_search
+{
+  "query": {
+    "match": {
+      "address": "Main St"
+    }
+  }
+}
+```
+
+```ruby
+{
+  "took": 5,
+  "timed_out": false,
+  "_shards": {
+    "total": 1,
+    "successful": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 1,
+      "relation": "eq"
+    },
+    "max_score": 1.3862942,
+    "hits": [
+      {
+        "_index": "users",
+        "_id": "kxWFcnMByiguvud1Z8vC",
+        "_score": 1.3862942,
+        "_source": {
+          "@timestamp": "2099-11-15T14:12:12",
+          "http": {
+            "request": {
+              "method": "get"
+            },
+            "response": {
+              "bytes": 1070000,
+              "status_code": 200
+            },
+            "version": "1.1"
+          },
+          "message": "GET /search HTTP/1.1 200 1070000",
+          "source": {
+            "ip": "127.0.0.1"
+          },
+          "user": {
+            "name": "John"
+          }
+        }
+      },
+      {
+        "_index": "users",
+        "_id": "kxWFcnMByfghtud1Z8vD",
+        "_score": 1.2862942,
+        "_source": {
+          "@timestamp": "2099-11-15T14:12:12",
+          "http": {
+            "request": {
+              "method": "get"
+            },
+            "response": {
+              "bytes": 1070000,
+              "status_code": 200
+            },
+            "version": "1.1"
+          },
+          "message": "GET /search HTTP/1.1 200 1070000",
+          "source": {
+            "ip": "127.0.0.1"
+          },
+          "user": {
+            "name": "Johne"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+## Aggregations
+
+I will implement this under `services/aggregations`
 
 ## Data streams
 
