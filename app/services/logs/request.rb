@@ -4,11 +4,11 @@ class Request
   end
 
   def call
-    ::Faraday.new(
+    ::Faraday.new({
       url: ENV.fetch('ELASTIC_URL', 'localhost:9200'),
       params: @data,
       headers: { 'Content-Type' => 'application/json' }
-    )
+    }.compact)
   end
 
   private
