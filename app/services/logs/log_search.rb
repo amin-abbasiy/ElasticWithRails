@@ -1,14 +1,14 @@
-class LogSearch
+class Logs::LogSearch
   def initialize(term, callback)
     @term = term
     @callback = callback
   end
 
   def call
-    ::Validate.new(@data).call
+    ::Logs::Validate.new(@data).call
 
     path = "_search"
-    request = ::Request.new(@data).call
+    request = ::Logs::Request.new(@data).call
     @response = request.get(path, @data)
 
     @response

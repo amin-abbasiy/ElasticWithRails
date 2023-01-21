@@ -1,4 +1,4 @@
-class Validate
+class ::Logs::Validate
   def initialize(json)
     @json = json
   end

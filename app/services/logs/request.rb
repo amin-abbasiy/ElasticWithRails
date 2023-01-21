@@ -1,4 +1,4 @@
-class Request
+class Logs::Request
   def initialize(data)
     @data = data
   end
