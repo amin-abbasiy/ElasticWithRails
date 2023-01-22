@@ -30,4 +30,7 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  messages:
+    welcome: "Hello, and Welcome!"
+  errors:
+    bad_request: "Bad Request"
