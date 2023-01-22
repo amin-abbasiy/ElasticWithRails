@@ -7,8 +7,10 @@ class Logs::LogSearch
   def call
     ::Logs::Validate.new(@term).call
 
+    query = Logs::MatchSearch.new(@term).call
     path = "_search"
-    @response = ::Logs::Request.new(@term, :get, path).call
+
+    @response = ::Logs::Request.new(query, :get, path).call
   end
 
   private

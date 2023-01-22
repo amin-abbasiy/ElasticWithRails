@@ -6,7 +6,7 @@ class Api::V1::LogsController < Api::V1::BaseController
   end
 
   def search
-    @logs = ::Logs::LogSearch.new(params[:term], self).call
+    @logs = ::Logs::LogSearch.new(params[:query].as_json, self).call
 
     render_formatted_output @logs.response.body, @log.status
   end

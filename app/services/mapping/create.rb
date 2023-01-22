@@ -8,7 +8,7 @@ class Mapping::Create
   def call
     ::Logs::Validate.new(@data).call
 
-    @response = ::Logs::Request.new(@data, :put, @path).call
+    @response = ::Logs::Request.new(@data.to_json, :put, @path).call
   end
 
   attr_reader :path, :data, :callback, :response

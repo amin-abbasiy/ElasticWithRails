@@ -5,7 +5,7 @@ class Mapping::Retrieve
   end
 
   def call
-    @response = ::Logs::Request.new({}, :get, @path).call
+    @response = ::Logs::Request.new(nil, :get, @path).call
   end
 
   private
