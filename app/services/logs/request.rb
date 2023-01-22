@@ -1,17 +1,35 @@
+require 'net/http'
 class Logs::Request
-  def initialize(data)
-    @data = data
+  def initialize(body, verb, path)
+    @verb = verb
+    @body = body
+    @path = path
+    @headers = { 'Content-Type' => 'application/json' }
+    @url = URI(ENV.fetch("ELASTIC_URL", 'http://0.0.0.0'))
+    @port = ENV.fetch("ELASTIC_PORT", '9200')
   end
 
   def call
-    ::Faraday.new({
-      url: ENV.fetch('ELASTIC_URL', 'localhost:9200'),
-      params: @data,
-      headers: { 'Content-Type' => 'application/json' }
-    }.compact)
+    @http = ::Net::HTTP.new(@url, @port)
+    self.send(@verb)
   end
 
   private
+    attr_reader :data, :verb, :http,
+                :headers, :body, :url,
+                :port, :path
 
-  attr_reader :data
+  def post
+    @http.post(@path, @body, @headers)
+  end
+
+  def get
+    @path += '?' + URI.encode_www_form(@body) if @body.present?
+    @http.get(@path, @headers)
+  end
+
+  def put
+    byebug
+    @http.put(@path, @body, @headers)
+  end
 end

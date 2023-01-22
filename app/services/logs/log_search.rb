@@ -5,13 +5,10 @@ class Logs::LogSearch
   end
 
   def call
-    ::Logs::Validate.new(@data).call
+    ::Logs::Validate.new(@term).call
 
     path = "_search"
-    request = ::Logs::Request.new(@data).call
-    @response = request.get(path, @data)
-
-    @response
+    @response = ::Logs::Request.new(@term, :get, path).call
   end
 
   private

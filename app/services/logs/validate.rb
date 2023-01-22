@@ -4,9 +4,9 @@ class ::Logs::Validate
   end
 
   def call
-    ::JSON.parse(@json)
+    ::JSON.parse(@json.to_json)
 
-    rescue JSONError => e
+    rescue ::JSON::JSONError => e
       e.message
   end
 

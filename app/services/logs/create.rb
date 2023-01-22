@@ -8,8 +8,7 @@ class Logs::Create
     ::Logs::Validate.new(@data).call
 
     path = "/logs/_doc"
-    request = ::Logs::Request.new(@data).call
-    @response = request.post(path)
+    @response = ::Logs::Request.new(@data, :post, path).call
   end
 
   private
