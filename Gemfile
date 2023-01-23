@@ -6,6 +6,12 @@ ruby "3.0.0"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
 
+# To use sqlite database
+gem "sqlite3"
+
+# For support get request with body params
+gem 'http'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
@@ -50,6 +56,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'byebug'
 end
 
 group :development do
@@ -68,4 +75,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem 'rspec-rails', '~> 6.0', '>= 6.0.1'
+  gem 'rspec-json_expectations', '~> 2.2'
 end
