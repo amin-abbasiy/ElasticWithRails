@@ -24,8 +24,7 @@ class Logs::Request
   end
 
   def get
-    @path += '?' + URI.encode_www_form(@body) if @body.present?
-    
+    @path += '?' + URI::encode_www_form(@body) if @body.present?
     @http.get(@path, @headers)
   end
 
